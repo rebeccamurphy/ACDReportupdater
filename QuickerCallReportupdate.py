@@ -23,8 +23,7 @@ def copy_and_overwrite(from_path, to_path): # used to make copies of the ACD rep
         shutil.rmtree(to_path)
     shutil.copytree(from_path, to_path)
 
-def copy_new_files(dest, src):
-    src_files = os.listdir(src)
+def copy_new_files(filelist, dest):
     for file_name in src_files:
         full_file_name = os.path.join(src, file_name)
         if (os.path.isfile(full_file_name)):
@@ -56,6 +55,10 @@ while letternum <26:
 answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
 if answer.lower() == 'y':
     SOURCE = "D:\ACD Reports\ACD " + year
+    src_files1 = os.listdir(SOURCE + "\Admiss 2013")
+    src_files2 = os.listdir(SOURCE + "\Help 2013")
+    src_files3 = os.listdir(SOURCE + "\SFS 2013")
+
     if os.path.exists(drive + ":\ACD " + str (int(year) -1)  ):
         answer = raw_input ("Starting a new year will delete all records last year from the flash drive. Do you want the records deleted? (y/n)")
         if answer.lower() == 'y':
@@ -66,9 +69,9 @@ if answer.lower() == 'y':
 # create a backup directory
     print "Copying...Please Wait"
     #copy_and_overwrite(SOURCE, BACKUP)
-    copy_new_files( drive +":\ACD 2013\Admiss 2013", SOURCE + "\Admiss 2013" )
-    copy_new_files( drive +":\ACD 2013\Help 2013",SOURCE + "\Help 2013"  )
-    copy_new_files( drive +":\ACD 2013\SFS 2013",SOURCE + "\SFS 2013" )
+    copy_new_files(src_files1, drive+ ":\ACD 2013\Admiss 2013" )
+    copy_new_files(src_files2, drive+ ":\ACD 2013\Help 2013" )
+    copy_new_files(src_files3, drive+ ":\ACD 2013\SFS 2013" )
 
     print "Done Copying ACD Reports for " +year
 #    
@@ -76,115 +79,61 @@ if answer.lower() == 'y':
 
 print "Starting to read through the records..."
 
-dummymonth = startmonth
+#dummymonth = startmonth
 admissrecords = []
 helprecords = []
 sfsrecords = []
-count =0 # used to see how much the loop has done, incase it wants to break after only going one month
+ # used to see how much the loop has done, incase it wants to break after only going one month
 
-while dummymonth < len(months): # goes through each department and saves the records in an array. Could probably make more effecient, a function call prob instead of hard coding it 3 times
-        month = months[dummymonth] 
-        while l < 32:
-                count+=1              
-                if os.path.exists(letter +':\ACD '+ year +'\Admiss '+year+ '\Admiss ' + month +" " + str(l) + '.txt'):
-                    openfile = open(letter+':\ACD '+ year +'\Admiss '+year+'\Admiss '+month +" " + str(l) + '.txt', 'r')
-                    text = openfile.read()
-                    
-                    #hundreds 8 spaces
-                    space1 = text.find("ADMISS      ") + len("ADMISS      ") 
-                    space2 = text.find(" ", space1)
-                    callnum = text[space1:space2]
-                       
-                    if len(callnum) != 3:  #tenths 9 spaces
-                        space1 = text.find("ADMISS       ") + len("ADMISS       ")
-                        space2 = text.find(" ", space1)
-                        callnum = text[space1:space2]
 
-                    if len(callnum) != 2 and len(callnum) !=3:
-                        #singles 10
-                        space1 = text.find("ADMISS        ") + len("ADMISS        ")  
-                        space2 = text.find(" ", space1)
-                        callnum = text[space1:space2]
+def data_crawl(dept, records, startday):
+    l = startday
+    dummymonth = startmonth
+    #count =0
+    while dummymonth < len(months): # goes through each department and saves the records in an array. Could probably make more effecient, a function call prob instead of hard coding it 3 times
+            month = months[dummymonth] 
+            while l < 32:
+                    #count+=1              
+                    if os.path.exists(drive +':/ACD '+ year +'/'+ dept +' '+year+'/'+ dept +' '+ month +" " + str(l) + '.txt'):
+                        openfile = open(drive+':/ACD '+ year +'/' +dept +' ' +year+'/'+ dept+ ' '+month +" " + str(l) + '.txt', 'r')
+                        text = openfile.read()
                         
-                    if callnum == 0 or not callnum: #still can let a zero get appended. annoying.
-                        l+=1
+                        #hundreds 12 chars total
+                        hundredspace = " " * (12-len(dept))
+
+                        space1 = text.find (dept.upper() + hundredspace) + len(dept.upper()+ hundredspace) 
+                        space2 = text.find(" ", space1)
+                        callnum = text[space1:space2]
+                           
+                        if len(callnum) != 3:  #tenths 13 chars total
+                            tenthsspace = " " * (13-len(dept))
+                            space1 = text.find(dept.upper()+ tenthsspace) + len(dept.upper()+tenthsspace)
+                            space2 = text.find(" ", space1)
+                            callnum = text[space1:space2]
+
+                        if len(callnum) != 2 and len(callnum) !=3:
+                            #singles 14 char total 
+                            singlespace = " " * (14-len(dept))
+                            space1 = text.find(dept.upper()+singlespace) + len(dept.upper()+singlespace)  
+                            space2 = text.find(" ", space1)
+                            callnum = text[space1:space2]
+                            
+                        if callnum == 0 or not callnum: #still can let a zero get appended. annoying.
+                            l+=1
+                        else:
+                            records.append([str(l)+'-'+month[0:3]+'-' +year[2:4],callnum])
+                            l+=1
                     else:
-                        admissrecords.append([str(l)+'-'+month[0:3]+'-' +year[2:4],callnum])
                         l+=1
-                else:
-                    l+=1
-        dummymonth+=1
-        l=1
-dummymonth=startmonth
-l=i 
-while dummymonth < len(months):
-        month = months[dummymonth] 
-        while l < 32:
-                if os.path.exists(drive +':\ACD '+ year +'\Help '+year+'\Help ' + month +" " + str(l) + '.txt'):
-                        openfile = open(drive+':\ACD '+ year +'\Help '+year+'\Help '+month +" " + str(l) + '.txt', 'r')
-                        text = openfile.read()
-                        
-                        #hundreds 8 spaces 
-                        space1 = text.find("HELP        ") + len("HELP        ") 
-                        space2 = text.find(" ", space1)
-                        callnum = text[space1:space2]
-                       
-                        if len(callnum) != 3:  #tenths 9 spaces
-                                space1 = text.find("HELP         ") + len("HELP         ")
-                                space2 = text.find(" ", space1)
-                                callnum = text[space1:space2]
+            dummymonth+=1
+            l=1
+    dummymonth=startmonth
+    l=i
 
-                        if len(callnum) != 2 and len(callnum) !=3:
-                                #singles 10
-                                space1 = text.find("HELP          ") + len("HELP          ")  
-                                space2 = text.find(" ", space1)
-                                callnum = text[space1:space2]
-                        
-                        if callnum == 0 or not callnum: 
-                                l+=1
-                        else:
-                                helprecords.append([str(l)+'-'+month[0:3]+'-' +year[2:4], callnum])
-                                l+=1
-                        
-                else:
-                        l+=1
-        dummymonth+=1
-        l=1
-dummymonth=startmonth
-l=i
-while dummymonth < len(months):
-        month = months[dummymonth] 
-        while l < 32:
-                if os.path.exists(drive+':\ACD '+ year +'\SFS '+year+'\SFS ' + month +" " + str(l) + '.txt'):
-                        openfile = open(drive+':\ACD '+ year +'\SFS '+year+'\SFS '+month +" " + str(l) + '.txt', 'r')
-                        text = openfile.read()
-                        
-                        #hundreds 8 spaces 
-                        space1 = text.find("SFS         ") + len("SFS         ") 
-                        space2 = text.find(" ", space1)
-                        callnum = text[space1:space2]
-                       
-                        if len(callnum) != 3:  #tenths 9 spaces
-                                space1 = text.find("SFS          ") + len("SFS          ")
-                                space2 = text.find(" ", space1)
-                                callnum = text[space1:space2]
+data_crawl('Admiss', admissrecords, l)
+data_crawl('Help', helprecords, l)
+data_crawl('Sfs', sfsrecords, l)
 
-                        if len(callnum) != 2 and len(callnum) !=3:
-                                #singles 10
-                                space1 = text.find("SFS           ") + len("SFS           ")  
-                                space2 = text.find(" ", space1)
-                                callnum = text[space1:space2]
-                         
-                        if callnum == 0 or not callnum: 
-                                l+=1
-                        else:
-                                sfsrecords.append([str(l)+'-'+month[0:3]+'-' +year[2:4],callnum])
-                                l +=1
-                        
-                else:
-                        l+=1
-        dummymonth+=1
-        l=1
 
 with  open(drive+':\ACDCallReportUpdate\missions.csv', 'wb') as admissfile:
         admisswriter = csv.writer(admissfile)
