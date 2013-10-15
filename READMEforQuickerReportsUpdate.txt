@@ -24,7 +24,7 @@ Updates:
 
 Needed Updates:
 
-Only copy new files, not all files from records.
+Only copy new files, not all files from records, would cut down time a lot. 
 
 Figure out what would happen when a new year starts. could probably keep it the way it is, and have to run it 2 different times from december 2013 and january 2014. 
 

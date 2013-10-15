@@ -37,7 +37,7 @@ allTheLetters = string.uppercase #list of all letters are other stuff at the end
 while letternum <26:
     letter =  allTheLetters[letternum:letternum+1]
     letternum +=1
-    if os.path.exists( letter +':\ACDCallReportUpdate\Script\QuickerCallReportupdate.py'):
+    if os.path.exists( letter +':\ACDCallReportUpdate\QuickerCallReportupdate.py'):
         drive = letter
         break  
 #
