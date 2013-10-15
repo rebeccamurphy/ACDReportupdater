@@ -6,7 +6,7 @@ import string
 #All the starting data stuff
 i = input('Enter Start Day: ')
 l = i #l is the dummy day basically
-m = raw_input('Enter Start Month (Full name or  number): ')
+m = raw_input('Enter Start Month (Full name or number): ')
 year = raw_input('Enter Year (2013,2014,etc): ')
 months = ['january', 'february','march','april','may', 'june', 'july', 'august','september','october','november','december']
 
@@ -37,7 +37,7 @@ allTheLetters = string.uppercase #list of all letters are other stuff at the end
 while letternum <26:
     letter =  allTheLetters[letternum:letternum+1]
     letternum +=1
-    if os.path.exists( letter +':\ACDCallReportUpdate\QuickerCallReportupdate.py'):
+    if os.path.exists( letter +':\ACDCallReportUpdate\Script\QuickerCallReportupdate.py'):
         drive = letter
         break  
 #
