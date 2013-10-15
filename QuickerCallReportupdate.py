@@ -23,6 +23,16 @@ def copy_and_overwrite(from_path, to_path): # used to make copies of the ACD rep
         shutil.rmtree(to_path)
     shutil.copytree(from_path, to_path)
 
+def copy_new_files(dest, src):
+    src_files = os.listdir(src)
+    for file_name in src_files:
+        full_file_name = os.path.join(src, file_name)
+        if (os.path.isfile(full_file_name)):
+            shutil.copy(full_file_name, dest)
+
+
+
+
 if isint(m):# used to tell is someone used a number for a month or a name make into a function 
     startmonth = int(m)-1
 else:
@@ -55,7 +65,10 @@ if answer.lower() == 'y':
     BACKUP = drive + ":\ACD " + year  
 # create a backup directory
     print "Copying...Please Wait"
-    copy_and_overwrite(SOURCE, BACKUP)
+    #copy_and_overwrite(SOURCE, BACKUP)
+    copy_new_files( drive +":\ACD 2013\Admiss 2013", SOURCE + "\Admiss 2013" )
+    copy_new_files( drive +":\ACD 2013\Help 2013",SOURCE + "\Help 2013"  )
+    copy_new_files( drive +":\ACD 2013\SFS 2013",SOURCE + "\SFS 2013" )
 
     print "Done Copying ACD Reports for " +year
 #    
