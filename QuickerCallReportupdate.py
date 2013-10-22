@@ -1,7 +1,4 @@
-import os
-import csv
-import shutil
-import string 
+import os, csv,shutil,string, functions
 
 #All the starting data stuff
 i = input('Enter Start Day: ')
@@ -9,27 +6,6 @@ l = i #l is the dummy day basically
 m = raw_input('Enter Start Month (Full name or number): ')
 year = raw_input('Enter Year (2013,2014,etc): ')
 months = ['january', 'february','march','april','may', 'june', 'july', 'august','september','october','november','december']
-
-def isint(x): # used to tell is someone used a number for a month or a name
-    try:
-        a = int(x)
-    except ValueError:
-        return False
-    else:
-        return True 
-
-def copy_and_overwrite(from_path, to_path): # used to make copies of the ACD reports from the thawed drive to the flash drive 
-    if os.path.exists(to_path):
-        shutil.rmtree(to_path)
-    shutil.copytree(from_path, to_path)
-
-def copy_new_files(scr_files, dest):
-    for file_name in src_files:
-        full_file_name = os.path.join(src, file_name)
-        if (os.path.isfile(full_file_name)):
-            shutil.copy(full_file_name, dest)
-
-
 
 
 if isint(m):# used to tell is someone used a number for a month or a name make into a function 
@@ -43,12 +19,7 @@ letter=''
 letternum=0
 allTheLetters = string.uppercase #list of all letters are other stuff at the end but mostly letters
 
-while letternum <26:
-    letter =  allTheLetters[letternum:letternum+1]
-    letternum +=1
-    if os.path.exists( letter +':\ACDCallReportUpdate\QuickerCallReportupdate.py'):
-        drive = letter
-        break  
+drive = functinos. find_drive()
 #
 
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
@@ -66,73 +37,30 @@ if answer.lower() == 'y':
         else:
             print "The records were not deleted. Please note how much space is available on the flash drive."
     BACKUP = drive + ":\ACD Reports\ACD " + year  
-# create a backup directory
+
+    answer = raw_input("Enter 0: to only copy the new files. (much faster) \n" + "Enter 1: to copy and overwrite all files. (Takes longer, but useful if the other method doesn't work.)")
+    # create a backup directory
     print "Copying...Please Wait"
-    #copy_and_overwrite(SOURCE, BACKUP)
-    '''copy_new_files(src_files1, drive+ ":\ACD 2013\Admiss 2013" )
-    copy_new_files(src_files2, drive+ ":\ACD 2013\Help 2013" )
-    copy_new_files(src_files3, drive+ ":\ACD 2013\SFS 2013" )
-    '''
-    copy_and_overwrite(SOURCE,BACKUP)
+    if (answer == 1)
+        functions.copy_and_overwrite(SOURCE, BACKUP)
+    if (answer == 0)
+        functions.copy_new_files(SOURCE,BACKUP)
     print "Done Copying ACD Reports for " +year
-#    
+    
 #starts extracting the relevant records
 
 print "Starting to read through the records..."
 
-#dummymonth = startmonth
+
 admissrecords = []
 helprecords = []
 sfsrecords = []
- # used to see how much the loop has done, incase it wants to break after only going one month
 
-def data_crawl(dept, records, startday):
-    l = startday
-    dummymonth = startmonth
-    #count =0
-    while dummymonth < len(months): # goes through each department and saves the records in an array. Could probably make more effecient, a function call prob instead of hard coding it 3 times
-            month = months[dummymonth] 
-            while l < 32:
-                    #count+=1              
-                    if os.path.exists(drive +':/ACD Reports/ACD '+ year +'/'+ dept +' '+year+'/'+ dept +' '+ month +" " + str(l) + '.txt'):
-                        openfile = open(drive+':/ACD Reports/ACD '+ year +'/' +dept +' ' +year+'/'+ dept+ ' '+month +" " + str(l) + '.txt', 'r')
-                        text = openfile.read()
-                        
-                        #hundreds 12 chars total
-                        hundredspace = " " * (12-len(dept))
 
-                        space1 = text.find (dept.upper() + hundredspace) + len(dept.upper()+ hundredspace) 
-                        space2 = text.find(" ", space1)
-                        callnum = text[space1:space2]
-                           
-                        if len(callnum) != 3:  #tenths 13 chars total
-                            tenthsspace = " " * (13-len(dept))
-                            space1 = text.find(dept.upper()+ tenthsspace) + len(dept.upper()+tenthsspace)
-                            space2 = text.find(" ", space1)
-                            callnum = text[space1:space2]
 
-                        if len(callnum) != 2 and len(callnum) !=3:
-                            #singles 14 char total 
-                            singlespace = " " * (14-len(dept))
-                            space1 = text.find(dept.upper()+singlespace) + len(dept.upper()+singlespace)  
-                            space2 = text.find(" ", space1)
-                            callnum = text[space1:space2]
-                            
-                        if callnum == 0 or not callnum: #still can let a zero get appended. annoying.
-                            l+=1
-                        else:
-                            records.append([str(l)+'-'+month[0:3]+'-' +year[2:4],callnum])
-                            l+=1
-                    else:
-                        l+=1
-            dummymonth+=1
-            l=1
-    dummymonth=startmonth
-    l=i
-
-data_crawl('Admiss', admissrecords, l)
-data_crawl('Help', helprecords, l)
-data_crawl('Sfs', sfsrecords, l)
+functions.data_crawl('Admiss', admissrecords, l)
+functions.data_crawl('Help', helprecords, l)
+functinos.data_crawl('Sfs', sfsrecords, l)
 
 
 with  open(drive+':\ACDCallReportUpdate\missions.csv', 'wb') as admissfile:
