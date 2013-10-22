@@ -1,3 +1,4 @@
+import os, shutil, sys, string
 def isint(x): # used to tell is someone used a number for a month or a name
     try:
         a = int(x)

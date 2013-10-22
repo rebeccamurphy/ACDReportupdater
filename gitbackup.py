@@ -1,4 +1,4 @@
-import os, shutil, sys, string
+import os, shutil, sys, string, functions
 # finds out what drive the flash drive is mounted to. 
 drive = 'null'
 letter=''
@@ -6,7 +6,7 @@ letternum=0
 allTheLetters = string.uppercase #list of all letters are other stuff at the end but mostly letters
 
 
-drive = find_drive()
+drive = functions.find_drive()
 #
 SOURCE1 = drive +':\ACDCallReportUpdate\READMEforQuickerReportsUpdate.txt'
 SOURCE2 = drive +':\ACDCallReportUpdate\QuickerCallReportupdate.py'
@@ -17,3 +17,6 @@ BACKUP = 'C:/Users/rebecca.murphy2/Documents/GitHub/ACDReportupdater'
 
 #copy_and_overwrite(drive+ ":/ACD 2013", "Z:ACD Reports\ACD Reports\ACD 2013")
 functions.copy_new_files1(drive+ ":\ACDCallReportUpdate", "C:/Users/rebecca.murphy2/Documents/GitHub/ACDReportupdater")
+os.remove("C:/Users/rebecca.murphy2/Documents/GitHub/ACDReportupdater/help.csv")
+os.remove("C:/Users/rebecca.murphy2/Documents/GitHub/ACDReportupdater/missions.csv")
+os.remove("C:/Users/rebecca.murphy2/Documents/GitHub/ACDReportupdater/sfs.csv")
