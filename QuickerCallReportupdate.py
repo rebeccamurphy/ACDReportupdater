@@ -8,20 +8,12 @@ year = raw_input('Enter Year (2013,2014,etc): ')
 months = ['january', 'february','march','april','may', 'june', 'july', 'august','september','october','november','december']
 
 
-if isint(m):# used to tell is someone used a number for a month or a name make into a function 
+if functions.isint(m):# used to tell is someone used a number for a month or a name make into a function 
     startmonth = int(m)-1
 else:
     startmonth = months.index(m.lower())
 
-# finds out what drive the flash drive is mounted to. 
-drive = 'null'
-letter=''
-letternum=0
-allTheLetters = string.uppercase #list of all letters are other stuff at the end but mostly letters
-
-drive = functinos. find_drive()
-#
-
+drive = functions.find_drive()
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
 answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
 if answer.lower() == 'y':
@@ -41,9 +33,9 @@ if answer.lower() == 'y':
     answer = raw_input("Enter 0: to only copy the new files. (much faster) \n" + "Enter 1: to copy and overwrite all files. (Takes longer, but useful if the other method doesn't work.)")
     # create a backup directory
     print "Copying...Please Wait"
-    if (answer == 1)
+    if (answer == 1):
         functions.copy_and_overwrite(SOURCE, BACKUP)
-    if (answer == 0)
+    if (answer == 0):
         functions.copy_new_files(SOURCE,BACKUP)
     print "Done Copying ACD Reports for " +year
     
@@ -56,11 +48,54 @@ admissrecords = []
 helprecords = []
 sfsrecords = []
 
+def data_crawl(dept, records, startday):
+    months = ['january', 'february','march','april','may', 'june', 'july', 'august','september','october','november','december']
+    l = startday
+    dummymonth = startmonth
+    #count =0
+    while dummymonth < len(months): # goes through each department and saves the records in an array. Could probably make more effecient, a function call prob instead of hard coding it 3 times
+            month = months[dummymonth] 
+            while l < 32:
+                    #count+=1              
+                    if os.path.exists(drive +':/ACD Reports/ACD '+ year +'/'+ dept +' '+year+'/'+ dept +' '+ month +" " + str(l) + '.txt'):
+                        openfile = open(drive+':/ACD Reports/ACD '+ year +'/' +dept +' ' +year+'/'+ dept+ ' '+month +" " + str(l) + '.txt', 'r')
+                        text = openfile.read()
+                        
+                        #hundreds 12 chars total
+                        hundredspace = " " * (12-len(dept))
 
+                        space1 = text.find (dept.upper() + hundredspace) + len(dept.upper()+ hundredspace) 
+                        space2 = text.find(" ", space1)
+                        callnum = text[space1:space2]
+                           
+                        if len(callnum) != 3:  #tenths 13 chars total
+                            tenthsspace = " " * (13-len(dept))
+                            space1 = text.find(dept.upper()+ tenthsspace) + len(dept.upper()+tenthsspace)
+                            space2 = text.find(" ", space1)
+                            callnum = text[space1:space2]
 
-functions.data_crawl('Admiss', admissrecords, l)
-functions.data_crawl('Help', helprecords, l)
-functinos.data_crawl('Sfs', sfsrecords, l)
+                        if len(callnum) != 2 and len(callnum) !=3:
+                            #singles 14 char total 
+                            singlespace = " " * (14-len(dept))
+                            space1 = text.find(dept.upper()+singlespace) + len(dept.upper()+singlespace)  
+                            space2 = text.find(" ", space1)
+                            callnum = text[space1:space2]
+                            
+                        if callnum == 0 or not callnum: #still can let a zero get appended. annoying.
+                            l+=1
+                        else:
+                            records.append([str(l)+'-'+month[0:3]+'-' +year[2:4],callnum])
+                            l+=1
+                    else:
+                        l+=1
+            dummymonth+=1
+            l=1
+    dummymonth=startmonth
+    l=i
+
+data_crawl('Admiss', admissrecords, l)
+data_crawl('Help', helprecords, l )
+data_crawl('Sfs', sfsrecords, l)
 
 
 with  open(drive+':\ACDCallReportUpdate\missions.csv', 'wb') as admissfile:
