@@ -23,7 +23,7 @@ def copy_and_overwrite(from_path, to_path): # used to make copies of the ACD rep
         shutil.rmtree(to_path)
     shutil.copytree(from_path, to_path)
 
-def copy_new_files(filelist, dest):
+def copy_new_files(scr_files, dest):
     for file_name in src_files:
         full_file_name = os.path.join(src, file_name)
         if (os.path.isfile(full_file_name)):
@@ -54,7 +54,7 @@ while letternum <26:
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
 answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
 if answer.lower() == 'y':
-    SOURCE = "D:\ACD Reports\ACD " + year
+    SOURCE =  "D:\ACD Reports\ACD " + year
     src_files1 = os.listdir(SOURCE + "\Admiss 2013")
     src_files2 = os.listdir(SOURCE + "\Help 2013")
     src_files3 = os.listdir(SOURCE + "\SFS 2013")
@@ -65,14 +65,15 @@ if answer.lower() == 'y':
             shutil.rmtree(drive + ":\ACD " + str (int(year) -1))
         else:
             print "The records were not deleted. Please note how much space is available on the flash drive."
-    BACKUP = drive + ":\ACD " + year  
+    BACKUP = drive + ":\ACD Reports\ACD " + year  
 # create a backup directory
     print "Copying...Please Wait"
     #copy_and_overwrite(SOURCE, BACKUP)
-    copy_new_files(src_files1, drive+ ":\ACD 2013\Admiss 2013" )
+    '''copy_new_files(src_files1, drive+ ":\ACD 2013\Admiss 2013" )
     copy_new_files(src_files2, drive+ ":\ACD 2013\Help 2013" )
     copy_new_files(src_files3, drive+ ":\ACD 2013\SFS 2013" )
-
+    '''
+    copy_and_overwrite(SOURCE,BACKUP)
     print "Done Copying ACD Reports for " +year
 #    
 #starts extracting the relevant records
@@ -85,7 +86,6 @@ helprecords = []
 sfsrecords = []
  # used to see how much the loop has done, incase it wants to break after only going one month
 
-
 def data_crawl(dept, records, startday):
     l = startday
     dummymonth = startmonth
@@ -94,8 +94,8 @@ def data_crawl(dept, records, startday):
             month = months[dummymonth] 
             while l < 32:
                     #count+=1              
-                    if os.path.exists(drive +':/ACD '+ year +'/'+ dept +' '+year+'/'+ dept +' '+ month +" " + str(l) + '.txt'):
-                        openfile = open(drive+':/ACD '+ year +'/' +dept +' ' +year+'/'+ dept+ ' '+month +" " + str(l) + '.txt', 'r')
+                    if os.path.exists(drive +':/ACD Reports/ACD '+ year +'/'+ dept +' '+year+'/'+ dept +' '+ month +" " + str(l) + '.txt'):
+                        openfile = open(drive+':/ACD Reports/ACD '+ year +'/' +dept +' ' +year+'/'+ dept+ ' '+month +" " + str(l) + '.txt', 'r')
                         text = openfile.read()
                         
                         #hundreds 12 chars total
