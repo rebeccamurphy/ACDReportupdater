@@ -17,6 +17,7 @@ drive = functions.find_drive()
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
 answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
 if answer.lower() == 'y':
+    #SOURCE =  "Z:\ACD Reports\ACD Reports\ACD " + year
     SOURCE =  "D:\ACD Reports\ACD " + year
     src_files1 = os.listdir(SOURCE + "\Admiss 2013")
     src_files2 = os.listdir(SOURCE + "\Help 2013")
@@ -30,13 +31,15 @@ if answer.lower() == 'y':
             print "The records were not deleted. Please note how much space is available on the flash drive."
     BACKUP = drive + ":\ACD Reports\ACD " + year  
 
-    answer = raw_input("Enter 0: to only copy the new files. (much faster) \n" + "Enter 1: to copy and overwrite all files. (Takes longer, but useful if the other method doesn't work.)")
+    answer = input("Enter 0: to only copy the new files. (much faster) \n" + "Enter 1: to copy and overwrite all files. (Takes longer, but useful if the other method doesn't work.)")
     # create a backup directory
     print "Copying...Please Wait"
     if (answer == 1):
         functions.copy_and_overwrite(SOURCE, BACKUP)
+        
     if (answer == 0):
         functions.copy_new_files(SOURCE,BACKUP)
+        print "got here"
     print "Done Copying ACD Reports for " +year
     
 #starts extracting the relevant records
