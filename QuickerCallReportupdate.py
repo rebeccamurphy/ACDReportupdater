@@ -1,42 +1,34 @@
 import os, csv,shutil,string, functions
-
+months = ['jan', 'feb','mar','apr','may', 'jun', 'jul', 'aug','sep','oct','nov','dec']
 #All the starting data stuff
-i = input('Enter Start Day: ')
+'''i = input('Enter Start Day: ')
 
 m = raw_input('Enter Start Month (Full name or number): ')
 year = raw_input('Enter Year (2013,2014,etc): ')
-months = ['jan', 'feb','mar','apr','may', 'jun', 'jul', 'aug','sep','oct','nov','dec']
+
 
 
 if functions.isint(m):# used to tell is someone used a number for a month or a name make into a function 
     startmonth = int(m)-1
 else:
     startmonth = months.index(m.lower()[0:3])
-
-
+'''
+print "Getting Day last updated..."
 drive = functions.find_drive()
 
 lastdayup2= open(drive+':\ACDCallReportUpdate\lastdayupdated.txt', 'r' )
 date= lastdayup2.readline()
 index1 =date.find('-')
-print i
 i = int(date[0:index1])
-print i
 index2 = date.find('-', index1+1)
-print m
 m = date[index1+1:index2]
-print m
-print startmonth
 startmonth = months.index(m.lower()[0:3])
-print startmonth
-print year
 year = "20" + date[index2+1:len(date)]
-print year 
 lastdayup2.close()
 
 l = i #l is the dummy day basically
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
-answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
+'''answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
 if answer.lower() == 'y':
     #SOURCE =  "Z:\ACD Reports\ACD Reports\ACD " + year
     SOURCE =  "D:\ACD Reports\ACD " + year
@@ -57,9 +49,17 @@ if answer.lower() == 'y':
     print "Done Copying ACD Reports for " +year
     
 #starts extracting the relevant records
-
-print "Starting to read through the records..."
-
+'''
+SOURCE =  "D:\ACD Reports\ACD " + year
+BACKUP = drive + ":\ACD Reports\ACD " + year  
+if (os.path.exists(SOURCE)):
+    print "Copying ACD Reports...Please Wait"
+    if not (os.path.exists(drive + ":\ACD " + year)):
+        functions.copy_and_overwrite(SOURCE, BACKUP)
+    else: 
+        functions.copy_new_files(SOURCE,BACKUP)
+    print "Done Copying ACD Reports for " +year
+    print "Starting to read through the records..."
 
 admissrecords = []
 helprecords = []

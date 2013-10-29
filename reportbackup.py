@@ -8,9 +8,15 @@ import os, shutil, sys, string, functions
 drive = functions.find_drive()
 year = ""
 
+lastdayup2= open(drive+':\ACDCallReportUpdate\lastdayupdated.txt', 'r' )
+date= lastdayup2.readline()
+index1 =date.find('-')
+index2 = date.find('-', index1+1)
+year = "20" + date[index2+1:len(date)]
+lastdayup2.close()
+
 BACKUP = "Z:ACD Reports\ACD Reports\ACD "
 
-year = raw_input("What year do you want to copy? (Ex 2013, etc.)")
 
 print "All new files for PreHELP, HELP, PreSFS, SFS, and ADMISS will be backed up to the network drive. \n"
 print "Copying...Please Wait..."
