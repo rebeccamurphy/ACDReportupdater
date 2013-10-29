@@ -19,13 +19,15 @@ file.
 
 Updates:
 
+10/29/13
+	should  now be able to copy new directories, such as when 2014 will start.
+	Only copy new files, not all files from records
+
 10/8/13
 	Now it copies the ACD directory on the CBX computer, as well as exporting the data to the csvs. It takes a few minutes to copy all the data, so theres prob a more effecient way to copy everything.
 
 Needed Updates:
 
-Only copy new files, not all files from records, would cut down time a lot. 
+Automatically know last day that was used, for backup and updating. 
 
-Figure out what would happen when a new year starts. could probably keep it the way it is, and have to run it 2 different times from december 2013 and january 2014. 
-
-Still appends 0 records sometimes. need to fix that. 
+I believe I fixed this but: Still appends 0 records sometimes. need to fix that. 

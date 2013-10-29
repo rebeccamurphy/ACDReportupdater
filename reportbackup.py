@@ -12,9 +12,12 @@ BACKUP = "Z:ACD Reports\ACD Reports\ACD "
 
 year = raw_input("What year do you want to copy? (Ex 2013, etc.)")
 
-print "All new files for HELP, SFS, and ADMISS will be backed up to the network drive. \n"
+print "All new files for PreHELP, HELP, PreSFS, SFS, and ADMISS will be backed up to the network drive. \n"
 print "Copying...Please Wait..."
 #copy_and_overwrite( drive+ ":\ACD Reports\ACD " + year, "Z:\ACD Reports\ACD Reports\ACD " +year)
-functions.copy_new_files( drive+ ":\ACD Reports\ACD " + year, "Z:\ACD Reports\ACD Reports\ACD " +year)
 
+if os.path.exists("Z:\ACD Reports\ACD Reports\ACD " +year):
+    functions.copy_new_files( drive+ ":\ACD Reports\ACD " + year, "Z:\ACD Reports\ACD Reports\ACD " +year)
+else: 
+    functions.copy_and_overwrite( drive+ ":\ACD Reports\ACD " + year, "Z:\ACD Reports\ACD Reports\ACD " +year)
 print "Done"

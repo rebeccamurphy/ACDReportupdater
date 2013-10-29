@@ -12,12 +12,12 @@ def copy_and_overwrite(from_path, to_path): # used to make copies of the ACD rep
         shutil.rmtree(to_path)
     shutil.copytree(from_path, to_path)
 
-def copy_new_files(scr_files, dest):
+'''def copy_new_files(scr_files, dest):
     for file_name in src_files:
         full_file_name = os.path.join(src, file_name)
         if (os.path.isfile(full_file_name)):
             shutil.copy(full_file_name, dest)
-
+'''
 def find_drive():
         drive = 'null'
         letter=''
