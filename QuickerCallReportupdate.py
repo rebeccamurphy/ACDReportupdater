@@ -1,18 +1,7 @@
 import os, csv,shutil,string, functions
 months = ['jan', 'feb','mar','apr','may', 'jun', 'jul', 'aug','sep','oct','nov','dec']
 #All the starting data stuff
-'''i = input('Enter Start Day: ')
 
-m = raw_input('Enter Start Month (Full name or number): ')
-year = raw_input('Enter Year (2013,2014,etc): ')
-
-
-
-if functions.isint(m):# used to tell is someone used a number for a month or a name make into a function 
-    startmonth = int(m)-1
-else:
-    startmonth = months.index(m.lower()[0:3])
-'''
 print "Getting Day last updated..."
 drive = functions.find_drive()
 
@@ -28,28 +17,7 @@ lastdayup2.close()
 
 l = i #l is the dummy day basically
 # Testing stuff so you dont ave to wait for it to copy if you dont want. 
-'''answer = raw_input ("Do you want to copy ACD Reports? (y/n)")
-if answer.lower() == 'y':
-    #SOURCE =  "Z:\ACD Reports\ACD Reports\ACD " + year
-    SOURCE =  "D:\ACD Reports\ACD " + year
 
-    BACKUP = drive + ":\ACD Reports\ACD " + year  
-
-    answer = input("Enter 0: to only copy the new files. (much faster) \n" + "Enter 1: to copy and overwrite all files. (Takes longer, but useful if the other method doesn't work.)")
-    # create a backup directory
-    print "Copying...Please Wait"
-    if (answer == 1):
-        functions.copy_and_overwrite(SOURCE, BACKUP)
-        
-    if (answer == 0):
-        if not (os.path.exists(drive + ":\ACD " + year)):
-            functions.copy_and_overwrite(SOURCE, BACKUP)
-        else: 
-            functions.copy_new_files(SOURCE,BACKUP)
-    print "Done Copying ACD Reports for " +year
-    
-#starts extracting the relevant records
-'''
 SOURCE =  "D:\ACD Reports\ACD " + year
 BACKUP = drive + ":\ACD Reports\ACD " + year  
 if (os.path.exists(SOURCE)):
@@ -65,7 +33,11 @@ admissrecords = []
 helprecords = []
 sfsrecords = []
 
-def data_crawl(dept, records, startday):
+admissdate =''
+helpdate =''
+sfsdate =''
+
+def data_crawl(dept, records, startday, lastdayupdated):
     lastdayupdated =''
     months = ['january', 'february','march','april','may', 'june', 'july', 'august','september','october','november','december']
     l = startday
@@ -111,14 +83,11 @@ def data_crawl(dept, records, startday):
             l=1
     dummymonth=startmonth
     l=i
-    if lastdayupdated != '':
-        lastdayup2= open(drive+':\ACDCallReportUpdate\lastdayupdated.txt', 'w' )
-        lastdayup2.write(lastdayupdated)
-        lastdayup2.close()
+ 
 
-data_crawl('Admiss', admissrecords, l)
-data_crawl('Help', helprecords, l )
-data_crawl('Sfs', sfsrecords, l)
+data_crawl('Admiss', admissrecords, l, admissdate)
+data_crawl('Help', helprecords, l, helpdate )
+data_crawl('Sfs', sfsrecords, l, sfsdate)
 
 #print lastdayup.readline();
 with  open(drive+':\ACDCallReportUpdate\missions.csv', 'wb') as admissfile:

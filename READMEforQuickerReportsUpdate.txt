@@ -22,12 +22,19 @@ Updates:
 10/29/13
 	should  now be able to copy new directories, such as when 2014 will start.
 	Only copy new files, not all files from records
+	
+	Automatically know last day that was used, for backup and updating. 
+	no longer requires user input, but still need to do way to deal with new year possibly.
 
 10/8/13
 	Now it copies the ACD directory on the CBX computer, as well as exporting the data to the csvs. It takes a few minutes to copy all the data, so theres prob a more effecient way to copy everything.
 
 Needed Updates:
 
-Automatically know last day that was used, for backup and updating. 
+Automate pasting into ACD report. (DataNitro?)
 
 I believe I fixed this but: Still appends 0 records sometimes. need to fix that. 
+
+Add case to repeat loop for 2014, if starting in late december 2013
+
+might have an error if sfs last existing record is not correct. perhaps write all 3 out to lastdayup2, then compare and pick the most current date. 
